@@ -2,38 +2,41 @@ name: Playwright Tests
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - uses: actions/checkout@v3
 
+      # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
+      # Step 3: Install project dependencies
       - name: Install dependencies
         run: npm install
 
+      # Step 4: Install system dependencies required by Playwright browsers
       - name: Install system dependencies for Playwright
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            libgtk-4-1 libgraphene-1.0-0 libwoff2-1 libvpx9 libevent-2.1-7 libopus0 \
+            libgtk-4-1 libgraphene-1.0-0 libwoff2dec0 libvpx9 libevent-2.1-7 libopus0 \
             gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
             gstreamer1.0-plugins-ugly gstreamer1.0-libav libflite1 libavif16 \
-            libharfbuzz-icu0 libsecret-1-0 libhyphen0 libgles2-mesa libx264-163
+            libharfbuzz-icu0 libsecret-1-0 libhyphen0 libmanette-0.2-0 libgles2-mesa-dev libx264-dev
 
-      - name: Install Playwright browsers
+      # Step 5: Install Playwright browsers
+      - name: Install Playwright Browsers
         run: npx playwright install
 
+      # Step 6: Run Playwright tests
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test --reporter=list
