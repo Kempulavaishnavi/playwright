@@ -28,3 +28,5 @@ class CartPage {
 }
 
 module.exports = { CartPage };
+
+//added note
